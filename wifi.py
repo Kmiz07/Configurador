@@ -1,7 +1,8 @@
 
 import configuracion,gc,network,utime,ure,usocket
 from machine import Pin
-piloto = 33#pin del led rojo en esp32cam. para esp32 comun usar pin2
+piloto = 2#pin del led rojo para esp32cam usar pin 33,  para esp32 comun usar pin2
+invertir = False # si precisamos invertir pin para el encendido.
 tiempo_espera = 15 #tiempo que probara de conectar al router
 def crea_pagina(valores):
     pagina = '<html>\r\n<head>\r\n</head>\r\n<body>\r\n<form action="configura.html" method="post">\r\n<ul>'
@@ -39,7 +40,7 @@ def main():
 #--------------------------------------------------------------
 #Aqui llamariamos a la funcion o modulo principal del programa.
 #--------------------------------------------------------------
-
+        print('fin del programa. todo ok')#y eliminar esta linea.
 
 
 #Cuando falla sta se crea un ap y se debe conectar en el y en un navegador enviar: [192.168.4.1/<SSID>,<PASSW>]
@@ -66,7 +67,10 @@ def main():
         aplan.config(essid = configuracion.AP_SSID, password = configuracion.AP_PASSW)
         print("Conectado como AP en:",aplan.ifconfig())
         p0 = Pin(piloto, Pin.OUT)
-        p0.value(0)
+        if invertir :
+            p0.value(0)
+        else:
+            p0.value(1)
         confserv = ("",80)
         serv_socket = usocket.socket()
         serv_socket.bind(confserv)
@@ -119,8 +123,10 @@ def main():
             else:
                 conn.send(b'HTTP/1.1 404 Not Found\r\nContent-Type: text/html \r\nConnection: close \r\n\r\n<html><body>Pagina no aceptada</body></html>\r\n\r\n')
                 conn.close()
-        print('saliendo y reiniciando')
         serv_socket.close()
-        p0.value(1)
+        if invertir :
+            p0.value(1)
+        else:
+            p0.value(0)
         configuracion.reinicia()
 gc.collect()
