@@ -7,6 +7,11 @@ import configuracion
 
 configuracion.unir("nombre", "'variable'")
 
+Para conocer las variables existentes podemos escribir configuracion.lista() y nos listara todas las variables que tenemos en el json.
+
+Podemos eliminar cualquier variable con el comando configuracion.eliminar(clave).
+Tambien podremos editar todas las opciones existentes por web cuando iniciemos por AP, pero no podremos crear nuevas ni eliminarlas.
+ 
 Y en el archivo 'datos.dat' se habra incluido en el json esa variable y su valor.
 Del mismo modo, en el interior del codigo se podria hacer esto mismo para editar una variable existente o crear una nueva.
 Como puedes apreciar, al inicio del modulo wifi.py, se abre el archivo de configuracion y se toman los datos para la conexion.
