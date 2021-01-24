@@ -1,5 +1,5 @@
 
-import configuracion,gc,network,utime,ure,usocket,conexion
+import configuracion,gc,network,utime,ure,usocket
 from machine import Pin
 piloto = 33#pin del led rojo en esp32cam. para esp32 comun usar pin2
 tiempo_espera = 15 #tiempo que probara de conectar al router
