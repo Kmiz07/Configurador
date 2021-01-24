@@ -4,6 +4,7 @@ El modo mas correcto de incluir nuevas variables si quieres no tener problemas e
 Cuando estas conectado en modo Repl por serie, si, por ejemplo, quisieras incluir una variable:valor tal que nombre= 'variable', podrias hacerlo escribiendo en la terminal de thonny lo siguiente:
 
 import configuracion
+
 configuracion.unir("nombre":"'variable'")
 
 Y en el archivo 'datos.dat' se habra incluido en el json esa variable y su valor.
