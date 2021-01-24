@@ -5,7 +5,7 @@ Cuando estas conectado en modo Repl por serie, si, por ejemplo, quisieras inclui
 
 import configuracion
 
-configuracion.unir("nombre":"'variable'")
+configuracion.unir("nombre", "'variable'")
 
 Y en el archivo 'datos.dat' se habra incluido en el json esa variable y su valor.
 Del mismo modo, en el interior del codigo se podria hacer esto mismo para editar una variable existente o crear una nueva.
