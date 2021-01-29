@@ -1,9 +1,10 @@
 
-import configuracion,gc,network,utime,ure,usocket
+import configuracion,gc,network,utime,usocket
 from machine import Pin
 piloto = 2#pin del led rojo para esp32cam usar pin 33,  para esp32 comun usar pin2
 invertir = False # si precisamos invertir pin para el encendido.
 tiempo_espera = 15 #tiempo que probara de conectar al router
+
 def crea_pagina(valores):
     pagina = '<html>\r\n<head>\r\n</head>\r\n<body>\r\n<form action="configura.html" method="post">\r\n<ul>'
     for k in valores:
@@ -46,17 +47,7 @@ def main():
 #Cuando falla sta se crea un ap y se debe conectar en el y en un navegador enviar: [192.168.4.1/<SSID>,<PASSW>]
 #el chip se reseteara con la nueva configuracion, y si no es correcta, volvera al ap de nuevo para reconfigurar.
     
-    else:
-        separa_por_lineas = ure.compile('[\r\n]')
-        separa_por_espacios = ure.compile('\s')
-        separa_por_and = ure.compile('&')
-        cambia_comillas = ure.compile('%27')
-        cambia_abre_corchete = ure.compile('%5B')
-        cambia_cierra_corchete = ure.compile('%5D')
-        cambia_coma = ure.compile('%2C')
-        cambia_dos_puntos = ure.compile('%3A')
-        separa_k_v = ure.compile('=')
-        
+    else:        
         tipo=[]
         motivo=[]
         valores=configuracion.lee()
@@ -86,8 +77,8 @@ def main():
                 if datos == b'\r\n':
                     break
             if recepcion != '':
-                lineas=separa_por_lineas.split(recepcion)
-                nombres=separa_por_espacios.split(lineas[0])
+                lineas = recepcion.splitlines()
+                nombres = lineas[0].split(' ')
                 tipo=nombres[0]#'GET' o 'POST' 
                 motivo=nombres[1]# '/' o 'configura.html'
             else:
@@ -105,14 +96,15 @@ def main():
                 datos = conn.read(longitud).decode()
 
 #         modifica respuestas para poder ingresarlas en el archivo de configuracion
-                resultados = separa_por_and.split(datos)
+#                 resultados = separa_por_and.split(datos)
+                resultados = datos.split('&')
                 for resultado in resultados:
-                    resultado_ok = cambia_comillas.sub("'",resultado)
-                    resultado = cambia_abre_corchete.sub("[",resultado_ok)
-                    resultado_ok = cambia_cierra_corchete.sub("]",resultado)
-                    resultado = cambia_coma.sub(",",resultado_ok)
-                    resultado_ok = cambia_dos_puntos.sub(":",resultado)
-                    k,v = separa_k_v.split(resultado_ok)
+                    resultado_ok = resultado.replace("%27","'")
+                    resultado = resultado_ok.replace("%5B","[")
+                    resultado_ok = resultado.replace("%5D","]")
+                    resultado = resultado_ok.replace("%2C",",")
+                    resultado_ok = resultado.replace("%3A",":")
+                    k,v = resultado_ok.split("=")
                     configuracion.unir(k,v)
                 conn.send(b'HTTP/1.1 200 OK\r\nContent-Type: text/html \r\nConnection: close \r\n\r\n<html><body>Cambios realizados</body></html>\r\n\r\n')
                 conn.close()
