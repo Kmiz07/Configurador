@@ -1,6 +1,10 @@
 import ujson,uos,machine
 
 fileconf='datos.dat'
+def lista():
+    z = lee()
+    for x   in z:
+        print('%s =  %s' %(x,z[x]))
 def escribe(datos):
     with open(fileconf,'w') as f:
         ujson.dump(datos,f)
