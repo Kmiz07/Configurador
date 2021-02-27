@@ -3,7 +3,7 @@ Existe un archivo 'datos.dat' que incluye un json con la configuracion de conexi
 El modo mas correcto de incluir nuevas variables si quieres no tener problemas es utilizando el mismo modulo configuracion.
 Cuando estas conectado en modo Repl por serie, si, por ejemplo, quisieras incluir una variable:valor tal que nombre= 'variable', podrias hacerlo escribiendo en la terminal de thonny lo siguiente:
 
-<b>configuracion</b>
+import configuracion
 
 configuracion.unir("nombre", "'variable'")
 
