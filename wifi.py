@@ -28,6 +28,7 @@ def main():
     aplan = network.WLAN(network.AP_IF)
     aplan.active(False)
     wlan.active(True)
+# si forzar es True, se forzara el ip al determinado en datos.dat, sino se utilizara el que determine el router.
     if configuracion.forzar == True:
         wlan.ifconfig(configuracion.ST_CONF)
     tiempo = utime.time()
